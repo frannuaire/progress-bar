@@ -1,0 +1,54 @@
+<html>
+
+    <body>
+    <progress-bar value="10" id="loading"></progress-bar> 
+
+
+    <template id="pbTemplate">
+        <style>
+            .container { height: 10px; border: solid 1px #ddd }
+            .progress { height: 10px; background-color: orange; }
+        </style>
+        <div class="container">
+            <div class="progress" ></div>
+        </div>
+    </template>
+
+    <script>
+        document.registerElement('progress-bar', {
+
+            prototype: Object.create(HTMLElement.prototype, {
+                createdCallback: {
+                    value: function () {
+                        var t = document.getElementById('pbTemplate');
+                        var clone = t.content.cloneNode(true);
+                        this.createShadowRoot().appendChild(clone);
+
+                        this.shadowRoot.querySelector('.progress').style.width = this.getAttribute('value') + '%';
+                    }
+                },
+                attributeChangedCallback: {
+                    value: function (attrName, oldValue, newValue) {
+                        switch (attrName) {
+                            case 'value':
+                                this.shadowRoot.querySelector('.progress').style.width = newValue + '%';
+                                break;
+                        }
+                    },
+                }
+            })
+        });
+  //     var x=  setInterval(avance, 100);
+
+        function avance() {
+            var loading = document.getElementById('loading');
+            var avancement = loading.value;
+            console.log(loading);
+            loading.value = avancement + 5;
+            if(loading.value===50){
+                clearInterval(x);
+            }
+        }
+    </script>
+</body>
+</html>
